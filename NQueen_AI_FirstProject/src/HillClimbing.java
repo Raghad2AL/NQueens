@@ -1,3 +1,4 @@
+import javafx.stage.Stage;
 public class HillClimbing {
 
 	public static void main(String[] args) {
