@@ -18,7 +18,7 @@ public class HillAlgo extends JFrame {
     static JFrame  frame ;
     static MyQueenClass[] InitialBored;//for randomly generating an initial case 
     static int HValue2;
-    private static int BoredSize = 5;
+    private static int BoredSize = 5;//Change size of the states from here
     private static JPanel panel;
     static JRButton SolveButton;
   //  public static ArrayList<JRButton> myList = new ArrayList<JRButton>();
