@@ -169,6 +169,10 @@ public class HillAlgo extends JFrame {
         return Next;
     }//method
 
+    
+    
+    
+    //************************************************************************************************//
     public static void main(String[] args) {
     	
     	
