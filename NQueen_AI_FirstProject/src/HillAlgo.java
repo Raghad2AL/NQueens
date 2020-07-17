@@ -46,7 +46,7 @@ public class HillAlgo extends JFrame {
         }
 		return temp;
 	        
-        }//function
+        }//Queen Method
     public static void GUI( int[][] tempBoard, JFrame frame)
     {
     	 bpanel=new JPanel(new GridLayout(BoredSize, BoredSize, 3, 3));
@@ -108,6 +108,7 @@ public class HillAlgo extends JFrame {
     // Method to find Heuristics of a state
     public static int HFunction (MyQueenClass[] state) {
         int heuristic = 0;
+        //checking for conflicts
         for (int i = 0; i< state.length; i++) {
             for (int j=i+1; j<state.length; j++ ) {
                 if (state[i].FindConflict(state[j])) {
@@ -116,55 +117,57 @@ public class HillAlgo extends JFrame {
             }
         }
         return heuristic;
-    }
+    }//Hfunction
 
     // This method is to find where to go next from our present state
     //it searches for the next step with the lowest H function and return it.
-    public static MyQueenClass[] NextStep (MyQueenClass[] presentBoard) {
+    public static MyQueenClass[] NextStep (MyQueenClass[] current) {
         MyQueenClass[] Next = new MyQueenClass[BoredSize];
         MyQueenClass[] temp = new MyQueenClass[BoredSize];
-        int presentHeuristic = HFunction(presentBoard);
-        int bestHeuristic = presentHeuristic;
+        int currentH = HFunction(current);
+        int BestH = currentH;
         int tempH;
 
         for (int i=0; i<BoredSize; i++) {
-            //  Copy present board as best board and temp board
-            Next[i] = new MyQueenClass(presentBoard[i].getRow(), presentBoard[i].getColumn());
+            //  assume current is the best next step
+            Next[i] = new MyQueenClass(current[i].getRow(), current[i].getColumn());
             temp[i] = Next[i];
         }
         //  Iterate each column
         for (int i=0; i<BoredSize; i++) {
             if (i>0)
-                temp[i-1] = new MyQueenClass (presentBoard[i-1].getRow(), presentBoard[i-1].getColumn());
+                temp[i-1] = new MyQueenClass (current[i-1].getRow(), current[i-1].getColumn());
             temp[i] = new MyQueenClass (0, temp[i].getColumn());
             //  Iterate each row
             for (int j=0; j<BoredSize; j++) {
                 //Get the heuristic
                 tempH = HFunction(temp);
                 //Check if temp board better than best board
-                if (tempH < bestHeuristic) {
-                    bestHeuristic = tempH;
+                if (tempH < BestH) {
+                    BestH = tempH;
                     //  Copy the temp board as best board
                     for (int k=0; k<BoredSize; k++) {
                         Next[k] = new MyQueenClass(temp[k].getRow(), temp[k].getColumn());
-                    }
-                }
+                    }//for
+                }//if
                 //Move the queen
                 if (temp[i].getRow()!=BoredSize-1)
+                {
                     temp[i].move();
-            }
-        }
-        //Check whether the present board and the best board found have same heuristic
-        //Then randomly generate new board and assign it to best board
-        if (bestHeuristic == presentHeuristic) {
+                }//if
+            }//second for
+        }//first for
+        //check if we got stuck as the current and best states are same then
+        //randomly generate new state and call Hfunction again
+        if (BestH == currentH) {
             
             Next = CreateBoredRandmoly();
             HValue = HFunction(Next);
         } else
-            HValue = bestHeuristic;
+            HValue = BestH;
         
         return Next;
-    }
+    }//method
 
     public static void main(String[] args) {
     	

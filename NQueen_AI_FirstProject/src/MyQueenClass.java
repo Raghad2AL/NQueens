@@ -1,5 +1,4 @@
-
-//Class for N-queens Problem
+//This class is used to present the current state, 
 public class MyQueenClass {
     private int row;
     private int column;
@@ -12,12 +11,12 @@ public class MyQueenClass {
     public void move () {
         row++;
     }
-
+//check rows, columns and diagonals if there is two queens attacking each other in that state
     public boolean FindConflict(MyQueenClass q){
-        //  Check rows and columns
+       
         if(row == q.getRow() || column == q.getColumn())
             return true;
-            //  Check diagonals
+           
         else if(Math.abs(column-q.getColumn()) == Math.abs(row-q.getRow()))
             return true;
         return false;
