@@ -25,41 +25,26 @@ public class HillAlgo extends JFrame {
     public static JRButton[][] MyButtonList = new JRButton[BoredSize][BoredSize];
 
 
-    //Method to create a new random board
+    //This method is called first to create a random bored 
+    //containing queens in random places. hence, this is the start point
     public static MyQueenClass[] CreateBoredRandmoly() {
-        MyQueenClass[] startBoard = new MyQueenClass[BoredSize];
+        MyQueenClass[] Temp = new MyQueenClass[BoredSize];
         Random random = new Random();
         for(int i=0; i<BoredSize; i++){
-            startBoard[i] = new MyQueenClass(random.nextInt(BoredSize), i);
+            Temp[i] = new MyQueenClass(random.nextInt(BoredSize), i);
         }
-        return startBoard;
+        return Temp;
     }
 
 
-    //Method to print the Current State
-    private static int[][] printState (MyQueenClass[] state) {
-        //Creating temporary board from the present board
-        int[][] tempBoard = new int[BoredSize][BoredSize];
+    //Create an int matrix where 1 means there is queen and zero means there is no queen
+    //this will help in creating the GUI in a simple way
+    private static int[][] FindingQueens (MyQueenClass[] state) {
+        int[][] temp = new int[BoredSize][BoredSize];
         for (int i=0; i<BoredSize; i++) {
-            //Get the positions of Queen from the Present board and set those positions as 1 in temp board
-            tempBoard[state[i].getRow()][state[i].getColumn()]=1;
+            temp[state[i].getRow()][state[i].getColumn()]=1;
         }
-		return tempBoard;
-            
-		/*
-		 * bpanel=new JPanel(new GridLayout(n, n, 3, 3)); bpanel.setSize(700,700);
-		 * bpanel.setLocation(0,0); for(int i=0;i<n;i++) { for(int j=0;j<n;j++) {
-		 * MyButtonList[i][j]=new JRButton("",700,700); //
-		 * MyButtonList[i][j].addMouseListener(new MouseHandler() );
-		 * bpanel.add(MyButtonList[i][j]);
-		 * 
-		 * } } for (int i2=0; i2<n; i2++) { //Get the positions of Queen from the
-		 * Present board and set those positions as 1 in temp board
-		 * if(tempBoard[state[i2].getRow()][state[i2].getColumn()]==1) {
-		 * MyButtonList[state[i2].getRow()][state[i2].getColumn()].setIcon(icon); } }
-		 * JFrame frame = new JFrame(); frame.setSize(1000,1000);
-		 * frame.setVisible(true); frame.setLayout(null); frame.add(bpanel);
-		 */
+		return temp;
 	        
         }//function
     public static void GUI( int[][] tempBoard, JFrame frame)
@@ -78,7 +63,7 @@ public class HillAlgo extends JFrame {
 	            }
 	        }
 	        for (int i2=0; i2<BoredSize; i2++) {
-	        	//from the generted array take the 1s where it hints that there is a queen there
+	        	//from the matrix take the 1s where it hints that there is a queen there
 	        	for(int j=0; j<BoredSize;j++)
 	        	{
 	            if(tempBoard[i2][j]==1)
@@ -107,15 +92,13 @@ public class HillAlgo extends JFrame {
   
     private class ActionHandler implements ActionListener{
 	 	   public void actionPerformed(ActionEvent event){
-	 		  HValue2 = findHeuristic(InitialBored);
-	 	        // test if the present board is the solution board
+	 		  HValue2 = HFunction(InitialBored);
 	 	        while (HValue2 != 0) {
-	 	            InitialBored = nextBoard(InitialBored);
+	 	            InitialBored = NextStep(InitialBored);
 	 	            HValue2  = HValue;
 	 	        }
-	 	        //Printing the solution
 	 	        frame.dispose();
-	 	        int[][] GUIB1 =  printState(InitialBored);
+	 	        int[][] GUIB1 =  FindingQueens(InitialBored);
 	 	        GUI(GUIB1, frame);
 	 	        
 	 		  
@@ -123,7 +106,7 @@ public class HillAlgo extends JFrame {
 	    }//action
 
     // Method to find Heuristics of a state
-    public static int findHeuristic (MyQueenClass[] state) {
+    public static int HFunction (MyQueenClass[] state) {
         int heuristic = 0;
         for (int i = 0; i< state.length; i++) {
             for (int j=i+1; j<state.length; j++ ) {
@@ -135,51 +118,52 @@ public class HillAlgo extends JFrame {
         return heuristic;
     }
 
-    // Method to get the next board with lower heuristic
-    public static MyQueenClass[] nextBoard (MyQueenClass[] presentBoard) {
-        MyQueenClass[] nextBoard = new MyQueenClass[BoredSize];
-        MyQueenClass[] tmpBoard = new MyQueenClass[BoredSize];
-        int presentHeuristic = findHeuristic(presentBoard);
+    // This method is to find where to go next from our present state
+    //it searches for the next step with the lowest H function and return it.
+    public static MyQueenClass[] NextStep (MyQueenClass[] presentBoard) {
+        MyQueenClass[] Next = new MyQueenClass[BoredSize];
+        MyQueenClass[] temp = new MyQueenClass[BoredSize];
+        int presentHeuristic = HFunction(presentBoard);
         int bestHeuristic = presentHeuristic;
         int tempH;
 
         for (int i=0; i<BoredSize; i++) {
             //  Copy present board as best board and temp board
-            nextBoard[i] = new MyQueenClass(presentBoard[i].getRow(), presentBoard[i].getColumn());
-            tmpBoard[i] = nextBoard[i];
+            Next[i] = new MyQueenClass(presentBoard[i].getRow(), presentBoard[i].getColumn());
+            temp[i] = Next[i];
         }
         //  Iterate each column
         for (int i=0; i<BoredSize; i++) {
             if (i>0)
-                tmpBoard[i-1] = new MyQueenClass (presentBoard[i-1].getRow(), presentBoard[i-1].getColumn());
-            tmpBoard[i] = new MyQueenClass (0, tmpBoard[i].getColumn());
+                temp[i-1] = new MyQueenClass (presentBoard[i-1].getRow(), presentBoard[i-1].getColumn());
+            temp[i] = new MyQueenClass (0, temp[i].getColumn());
             //  Iterate each row
             for (int j=0; j<BoredSize; j++) {
                 //Get the heuristic
-                tempH = findHeuristic(tmpBoard);
+                tempH = HFunction(temp);
                 //Check if temp board better than best board
                 if (tempH < bestHeuristic) {
                     bestHeuristic = tempH;
                     //  Copy the temp board as best board
                     for (int k=0; k<BoredSize; k++) {
-                        nextBoard[k] = new MyQueenClass(tmpBoard[k].getRow(), tmpBoard[k].getColumn());
+                        Next[k] = new MyQueenClass(temp[k].getRow(), temp[k].getColumn());
                     }
                 }
                 //Move the queen
-                if (tmpBoard[i].getRow()!=BoredSize-1)
-                    tmpBoard[i].move();
+                if (temp[i].getRow()!=BoredSize-1)
+                    temp[i].move();
             }
         }
         //Check whether the present board and the best board found have same heuristic
         //Then randomly generate new board and assign it to best board
         if (bestHeuristic == presentHeuristic) {
             
-            nextBoard = CreateBoredRandmoly();
-            HValue = findHeuristic(nextBoard);
+            Next = CreateBoredRandmoly();
+            HValue = HFunction(Next);
         } else
             HValue = bestHeuristic;
         
-        return nextBoard;
+        return Next;
     }
 
     public static void main(String[] args) {
@@ -187,7 +171,7 @@ public class HillAlgo extends JFrame {
     	
         //Creating the initial Board
          InitialBored = CreateBoredRandmoly();
-        int[][] GUIB =  printState(InitialBored);
+        int[][] GUIB =  FindingQueens(InitialBored);
        frame = new JFrame();
         GUI(GUIB, frame);
        
