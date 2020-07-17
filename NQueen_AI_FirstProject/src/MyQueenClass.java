@@ -1,9 +1,9 @@
 
 //Class for N-queens Problem
-public class NQueen {
+public class MyQueenClass {
     private int row;
     private int column;
-    public NQueen(int row, int column) {
+    public MyQueenClass(int row, int column) {
         this.row = row;
         this.column = column;
         
@@ -13,7 +13,7 @@ public class NQueen {
         row++;
     }
 
-    public boolean ifConflict(NQueen q){
+    public boolean FindConflict(MyQueenClass q){
         //  Check rows and columns
         if(row == q.getRow() || column == q.getColumn())
             return true;
