@@ -13,7 +13,7 @@ import java.util.Random;
 public class HillAlgo extends JFrame {
     private static int HValue = 0;
     private static JPanel bpanel;
-    static Icon icon = new ImageIcon("res/queen.PNG");
+    static Icon icon = new ImageIcon("res/queen1.PNG");
     JRButton btn;
     static JFrame  frame ;
     static NQueen[] InitialBored;//for randomly generating an initial case 
