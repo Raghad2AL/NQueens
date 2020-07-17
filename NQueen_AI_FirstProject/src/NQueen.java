@@ -1,14 +1,8 @@
-import java.awt.GridLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 //Class for N-queens Problem
-public class NQueen extends JFrame{
+public class NQueen {
     private int row;
     private int column;
-    private JPanel panel;
-
     public NQueen(int row, int column) {
         this.row = row;
         this.column = column;

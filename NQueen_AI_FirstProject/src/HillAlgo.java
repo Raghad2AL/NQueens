@@ -72,6 +72,7 @@ public class HillAlgo extends JFrame {
 	            for(int j=0;j<n;j++)
 	            {
 	            	MyButtonList[i][j]=new JRButton("",700,700);
+	            	//MyButtonList[i][j].setEnabled(false);
 	                bpanel.add(MyButtonList[i][j]);
 	                
 	            }
