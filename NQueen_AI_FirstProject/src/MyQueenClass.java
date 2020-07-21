@@ -1,4 +1,4 @@
-//This class is used to present the current state, 
+//This class is used to present the current state and the queens places in a bored  
 public class MyQueenClass {
     private int row;
     private int column;
@@ -9,7 +9,8 @@ public class MyQueenClass {
         this.column = column;
         
     }
-
+    
+// move queen to a different row
     public void ChangeQueenPlace() {
         row++;
     }
