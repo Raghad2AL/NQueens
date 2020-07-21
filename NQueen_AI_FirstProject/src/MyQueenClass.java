@@ -10,7 +10,7 @@ public class MyQueenClass {
         
     }
 
-    public void move () {
+    public void ChangeQueenPlace() {
         row++;
     }
 //check rows, columns and diagonals if there is two queens attacking each other in that state
@@ -23,6 +23,8 @@ public class MyQueenClass {
             return true;
         return false;
     }
+    
+    
     public int getRow() {
         return row;
     }

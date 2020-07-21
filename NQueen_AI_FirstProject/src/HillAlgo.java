@@ -153,7 +153,7 @@ public class HillAlgo extends JFrame {
                 //Move the queen
                 if (temp[i].getRow()!=BoredSize-1)
                 {
-                    temp[i].move();
+                    temp[i].ChangeQueenPlace();
                 }//if
             }//second for
         }//first for
