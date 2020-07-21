@@ -2,6 +2,8 @@
 public class MyQueenClass {
     private int row;
     private int column;
+    
+    //the row and the col where the queen is at
     public MyQueenClass(int row, int column) {
         this.row = row;
         this.column = column;
